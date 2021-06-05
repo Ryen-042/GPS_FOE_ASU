@@ -15,6 +15,7 @@ unsigned char UART_InChar(void);
 	// Wait for buffer to be not full, then output
 void UART_OutChar(unsigned char data);
 	//turn on Red led if distance exceed 100m
+void enable_Red(int distance);
 
 
 
