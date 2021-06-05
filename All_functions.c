@@ -59,5 +59,12 @@ void UART_OutChar(unsigned char data){
   while((UART1_FR_R&0x0020) != 0);      // wait until TXFF is 0
   UART1_DR_R = data;
 }
-
+//turn on Red led if distance exceed 100m
+void enable_Red(int distance){
+	if( distance >= 100 ){
+		GPIO_PORTF_DATA_R |= Red ;   // Turn on red LED, PF1
+	}
+	else
+		GPIO_PORTF_DATA_R &= ~Red ;  // Turn off red LED, PF1
+}
 
