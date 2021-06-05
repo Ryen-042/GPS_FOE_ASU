@@ -3,9 +3,9 @@
 #include<math.h>
 #include<stdint.h>
 
-//*Function caculate distance and accumulate total distance during moving by passing the previous and current longitude & latitude of each position
+//*Function calculate distance and accumulate total distance during moving by passing the previous and current longitude & latitude of each position
 
-uint32_t calc_distance(double lat1, double long1,float lat2, double long2){
+uint32_t calc_distance(double lat1, double long1,double lat2, double long2){
 	
 	static double totaldis=0.0;    //total distance variable 
 	const double PI =3.14;
