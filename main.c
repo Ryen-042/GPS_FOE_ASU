@@ -1,5 +1,6 @@
 #include "All_functions.h"
 #include "7_segment"
+#include "TM4C123GH6PM.h"
 
 
 void SystemInit(void){}

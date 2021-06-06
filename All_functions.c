@@ -1,6 +1,7 @@
 #include "All_functions.h"
 #include "tm4c123gh6pm.h"
 #include <stdint.h>
+#include<math.h>
 
 #define Red          0x02
 #define Blue         0x04
@@ -68,3 +69,58 @@ void enable_Red(int distance){
 		GPIO_PORTF_DATA_R &= ~Red ;  // Turn off red LED, PF1
 }
 
+
+//*Function calculate distance and accumulate total distance during moving by passing the previous and current longitude & latitude of each position
+
+uint32_t calc_distance(double lat1, double long1,double lat2, double long2){
+	
+	static double totaldis=0.0;    //total distance variable 
+	const double PI =3.14;
+  const double r =(6371*1000);   //radius of the earth 
+	
+	//Convert Positions Spherical Coordinates to Cartesian Coordinates
+	
+	double x1 = r*cos(lat1*(PI/180))*cos(long1*(PI/180));  
+	double y1 = r*cos(lat1*(PI/180))*sin(long1*(PI/180));
+	double z1 = r*sin(lat1*(PI/180));
+	
+	double x2 =r*cos(lat2*(PI/180))*cos(long2*(PI/180));
+	double y2 =r*cos(lat2*(PI/180))*sin(long2*(PI/180));
+	double z2 =r*sin(lat2*(PI/180));
+	
+	//Calculating the distace between  two Close Coordinates assuming approximately linear Path
+	
+	double dis= sqrt(pow((x1-x2),2)+pow(y1-y2,2)+pow(z1-z2,2));
+	
+	//accumulate to the total distance
+	
+	totaldis+=dis;
+	
+	//return the total integer distance in meter with selling approxmation
+	return((uint32_t)(totaldis+0.5));
+}
+// Get the Latitude and Longitude from the data.
+void getCoor(char data[], double *lat2, double *lon2)
+{
+    char acceptedId[] = "$GPGGA";
+    char messageId[20] = {0};
+    double lat, lon, x;
+    char y;
+
+    sscanf(data, "%[^,],%lf,%lf,%c,%lf", messageId, &x, &lat, &y, &lon);
+
+    // if the message  id isn't accepted.
+    if (strcmp(messageId, acceptedId))
+    {
+        return;
+    }
+
+    *lat2 = ddegree(lat);
+    *lon2 = ddegree(lon);
+}
+// Return the angle in decimal degree.
+double ddegree(double angle)
+{
+	int degree = (int)angle /100;
+	return (degree +  (angle - degree * 100)/60.0);
+}
