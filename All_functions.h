@@ -19,5 +19,7 @@ void enable_Red(int distance);
 
 //*Function calculate distance and accumulate total distance during moving by passing the previous and current longitude & latitude of each position
 uint32_t calc_distance(double lat1, double long1,double lat2, double long2);
+// Get the Latitude and Longitude from the data.
+void getCoor(char data[], double *lat2, double *lon2);
 
 #endif // All_FUNCTIONS
